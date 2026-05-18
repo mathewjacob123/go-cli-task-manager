@@ -6,12 +6,15 @@ import (
 )
 
 func main() {
-	tasks, err := task.LoadTasks()
+
+	err := task.AddTask("Learn Go")
 
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+
+	tasks, _ := task.ListTasks()
 
 	fmt.Println(tasks)
 }

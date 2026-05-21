@@ -2,6 +2,20 @@ package task
 
 import "errors"
 
+func generateTaskID(tasks []Task) int {
+
+	maxID := 0
+
+	for _, task := range tasks {
+
+		if task.ID > maxID {
+			maxID = task.ID
+		}
+	}
+
+	return maxID + 1
+}
+
 func AddTask(title string) error {
 	tasks, err := LoadTasks()
 
@@ -10,7 +24,7 @@ func AddTask(title string) error {
 	}
 
 	newTask := Task{
-		ID:        len(tasks) + 1,
+		ID: generateTaskID(tasks),
 		Title:     title,
 		Completed: false,
 	}

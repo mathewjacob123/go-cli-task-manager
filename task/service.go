@@ -2,93 +2,71 @@ package task
 
 import "errors"
 
-func generateTaskID(tasks []Task) int {
-
-	maxID := 0
-
-	for _, task := range tasks {
-
-		if task.ID > maxID {
-			maxID = task.ID
-		}
-	}
-
-	return maxID + 1
-}
 
 func AddTask(title string) error {
-	tasks, err := LoadTasks()
+    store, err := LoadStore()
+    if err != nil {
+        return err
+    }
 
-	if err != nil {
-		return err
-	}
+    newTask := Task{
+        ID:        store.NextID,   // use NextID instead of generateTaskID
+        Title:     title,
+        Completed: false,
+    }
 
-	newTask := Task{
-		ID: generateTaskID(tasks),
-		Title:     title,
-		Completed: false,
-	}
+    store.Tasks = append(store.Tasks, newTask)
+    store.NextID++               
 
-	tasks = append(tasks, newTask)
-
-	return SaveTasks(tasks)
+    return SaveStore(store)
 }
 
 func ListTasks() ([]Task, error) {
-	return LoadTasks()
+    store, err := LoadStore()
+    if err != nil {
+        return nil, err
+    }
+    return store.Tasks, nil
 }
 
 func CompleteTask(id int) error {
-	tasks, err := LoadTasks()
-
-	if err != nil {
-		return err
-	}
-
-	for i := range tasks {
-		if tasks[i].ID == id {
-			tasks[i].Completed = true
-			return SaveTasks(tasks)
-		}
-	}
-
-	return errors.New("task not found")
+    store, err := LoadStore()
+    if err != nil {
+        return err
+    }
+    for i := range store.Tasks {
+        if store.Tasks[i].ID == id {
+            store.Tasks[i].Completed = true
+            return SaveStore(store)
+        }
+    }
+    return errors.New("task not found")
 }
 
 func DeleteTask(id int) error {
-	tasks, err := LoadTasks()
-
-	if err != nil {
-		return err
-	}
-
-	for i := range tasks {
-		if tasks[i].ID == id {
-			tasks = append(tasks[:i], tasks[i+1:]...)
-			return SaveTasks(tasks)
-		}
-	}
-
-	return errors.New("task not found")
+    store, err := LoadStore()
+    if err != nil {
+        return err
+    }
+    for i := range store.Tasks {
+        if store.Tasks[i].ID == id {
+            store.Tasks = append(store.Tasks[:i], store.Tasks[i+1:]...)
+            return SaveStore(store)    
+        }
+    }
+    return errors.New("task not found")
 }
 
 func UpdateTask(id int, newTitle string) error {
-
-	tasks, err := LoadTasks()
-
-	if err != nil {
-		return err
-	}
-
-	for i := range tasks {
-
-		if tasks[i].ID == id {
-
-			tasks[i].Title = newTitle
-
-			return SaveTasks(tasks)
-		}
-	}
-
-	return errors.New("task not found")
+    store, err := LoadStore()
+    if err != nil {
+        return err
+    }
+    for i := range store.Tasks {
+        if store.Tasks[i].ID == id {
+            store.Tasks[i].Title = newTitle
+            return SaveStore(store)
+        }
+    }
+    return errors.New("task not found")
 }

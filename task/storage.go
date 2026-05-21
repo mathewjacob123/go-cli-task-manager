@@ -5,39 +5,31 @@ import (
 	"os"
 )
 
-const fileName = "tasks.json"
+var fileName = "tasks.json"
 
-func LoadTasks() ([]Task, error) {
-	var tasks []Task
-
-	data, err := os.ReadFile(fileName)
-
-	if err != nil {
-		if os.IsNotExist(err) {
-			return []Task{}, nil
-		}
-		return nil, err
-	}
-
-	if len(data) == 0 {
-		return []Task{}, nil
-	}
-
-	err = json.Unmarshal(data, &tasks)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return tasks, nil
+func LoadStore() (Store, error) {
+    data, err := os.ReadFile(fileName)
+    if err != nil {
+        if os.IsNotExist(err) {
+            return Store{NextID: 1, Tasks: []Task{}}, nil
+        }
+        return Store{}, err
+    }
+    if len(data) == 0 {
+        return Store{NextID: 1, Tasks: []Task{}}, nil
+    }
+    var store Store
+    err = json.Unmarshal(data, &store)
+    if err != nil {
+        return Store{}, err
+    }
+    return store, nil
 }
 
-func SaveTasks(tasks []Task) error {
-	data, err := json.MarshalIndent(tasks, "", "  ")
-
-	if err != nil {
-		return err
-	}
-
-	return os.WriteFile(fileName, data, 0644)
+func SaveStore(store Store) error {
+    data, err := json.MarshalIndent(store, "", "  ")
+    if err != nil {
+        return err
+    }
+    return os.WriteFile(fileName, data, 0644)
 }

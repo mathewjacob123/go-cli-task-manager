@@ -107,6 +107,31 @@ func main() {
 
 		fmt.Println("Task deleted successfully")
 
+		case "update":
+
+	if len(os.Args) < 4 {
+		fmt.Println("Usage: update <id> <new title>")
+		return
+	}
+
+	id, err := strconv.Atoi(os.Args[2])
+
+	if err != nil {
+		fmt.Println("Invalid task ID")
+		return
+	}
+
+	newTitle := os.Args[3]
+
+	err = task.UpdateTask(id, newTitle)
+
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	fmt.Println("Task updated successfully")
+
 	default:
 		fmt.Println("Unknown command")
 	}

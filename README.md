@@ -17,7 +17,7 @@ A command-line task management application built in Go that lets you manage task
 
 ## Project Structure
 
-```text
+text
 task-manager/
 ├── main.go           # Entry point, CLI command routing
 └── task/
@@ -26,17 +26,11 @@ task-manager/
     └── service.go    # Business logic (add, list, complete, delete, update)
 ```
 
-## Installation
 
-```bash
-git clone https://github.com/yourusername/task-manager
-cd task-manager
-go build -o task main.go
-```
 
 ## Usage
 
-```bash
+bash
 # Add a task
 go run main.go add "Learn Go"
 

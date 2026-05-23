@@ -45,14 +45,19 @@ go run main.go update 1 "Learn Go and build REST APIs"
 
 # Delete a task
 go run main.go delete 1
-```
+
 
 ## Example Output
 
-```
+
 1. Learn Go [❌]
 2. Build REST API [✅]
-```
+
+## Installation
+git clone https://github.com/mathewjacob123/go-cli-task-manager
+cd go-cli-task-manager
+go run main.go
+
 
 ## What I Learned
 

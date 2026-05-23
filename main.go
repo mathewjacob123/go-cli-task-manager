@@ -58,7 +58,12 @@ func main() {
 				status = "✅"
 			}
 
-			fmt.Printf("%d. %s [%s]\n", t.ID, t.Title, status)
+			fmt.Printf("%d. %s [%s] - created: %s\n", 
+    t.ID, 
+    t.Title, 
+    status,
+    t.CreatedAt.Format("2006-01-02 15:04"),
+)
 		}
 
 	case "complete":

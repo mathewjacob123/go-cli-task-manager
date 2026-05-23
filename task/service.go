@@ -1,6 +1,9 @@
 package task
 
-import "errors"
+import (
+    "errors"
+    "time"
+)
 
 
 func AddTask(title string) error {
@@ -13,6 +16,7 @@ func AddTask(title string) error {
         ID:        store.NextID,   // use NextID instead of generateTaskID
         Title:     title,
         Completed: false,
+        CreatedAt: time.Now(),
     }
 
     store.Tasks = append(store.Tasks, newTask)

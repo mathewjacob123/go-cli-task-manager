@@ -191,3 +191,18 @@ func TestUpdateInvalidTask(t *testing.T) {
 	}
 }
 
+func TestIDDoesNotReuse(t *testing.T) {
+    setupTestFile()
+    defer cleanupTestFile()
+
+    AddTask("Task 1")  // gets ID 1
+    DeleteTask(1)      // deleted
+    AddTask("Task 2")  // should get ID 2, NOT 1
+
+    store, _ := LoadStore()
+
+    if store.Tasks[0].ID != 2 {
+        t.Fatalf("expected ID 2, got %d — ID was reused", store.Tasks[0].ID)
+    }
+}
+
